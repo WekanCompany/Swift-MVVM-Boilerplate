@@ -14,13 +14,6 @@
 * [OHHTTPSTUBS](https://github.com/AliSoftware/OHHTTPStubs) To Stub the network requests. We use it for Unit Testing.
 * [SwiftLint](https://github.com/realm/SwiftLint) Tool to enforce Swift style and conventions.
 
-### How do I get set up? ###
-
-* Edit app specific configurations in AppConfig.swift
-* For firebase, replace the GoogleService-Info.plist.
-* Folder named 'Common' can be added to your projects
-* MVVM folder contains authentication module implementaion which can be used as reference for MVVM architecture.
-
 ### MVVM Pattern ###
 
 Authentication module is implemented using MVVM design pattern. This can be used as a reference to follow MVVM architecture in your products.
@@ -63,7 +56,10 @@ SwiftLint is added to enforce swift styles and conventions.
 $ pod install
 
 ```
-* In AppConfig.swift, update BaseUrls of different environments
+* 'Common' folder can be dragged and added to your projects
+* Set app specific configurations, environment BaseURLs in Common -> Config -> AppConfig.swift
+* For firebase services, replace the GoogleService-Info.plist with the one you downloaded from firebase console.
+* MVVM folder contains authentication module implementaion which can be used as reference for MVVM architecture.
 
 
 ## **Testcase report generation** - [Scan](https://docs.fastlane.tools/actions/run_tests/)
