@@ -1,0 +1,45 @@
+/* 
+  Localizable.strings
+  WKBoilerPlate
+
+  Created by Brian on 30/08/19.
+  Copyright © 2019 Wekan. All rights reserved.
+*/
+
+"Please enter all the fields"           = "Please enter all the fields";
+"Please enter the first name"           = "Please enter the first name";
+"Please enter the last name"            = "Please enter the last name";
+"Please enter the email"                = "Please enter the email";
+"Please enter the password"             = "Please enter the password";
+"Please upload a profile image"         = "Please upload a profile image";
+"Please enter a valid first name"       = "Please enter a valid first name";
+"Please enter a valid last name"        = "Please enter a valid last name";
+"Please enter a valid email"            = "Please enter a valid email";
+"First name exceeded its maximum limit of length"  = "First name exceeded its maximum limit of length";
+"Last name exceeded its maximum limit of length"   = "Last name exceeded its maximum limit of length";
+"Email exceeded its maximum limit of length"       = "Email exceeded its maximum limit of length";
+"Password exceeded its maximum limit of length"    = "Password exceeded its maximum limit of length";
+
+"Password validation alert"             = "Password should have a minimum of 8 characters with an uppercase, a number, and a special character";
+"Please enter the otp received on your registered email" = "Please enter the otp received on your registered email";
+
+"Profile Picture"                       = "Profile Picture";
+"Open Camera"                           = "Open Camera";
+"Open Photos Album"                     = "Open Photos Album";
+"Cancel"                                = "Cancel";
+"OK"                                    = "OK";
+"Validation Failed"                     = "Validation Failed";
+"Request Failed"                        = "Request Failed";
+"Sent"                                  = "Sent";
+"OTP resent successfully"               = "OTP resent successfully";
+
+"Success"                               = "Success";
+"Unknown Error"                         = "Unknown Error";
+"Session restored. Please retry"        = "Session restored. Please retry";
+
+"Profile updated successfully"          = "Profile updated successfully";
+"Password mismatch. Please correctly confirm the new password"  = "Password mismatch. Please correctly confirm the new password";
+"Please confirm the new password"       = "Please confirm the new password";
+"Please enter the new password"         = "Please enter the new password";
+"Please enter the old password"         = "Please enter the old password";
+

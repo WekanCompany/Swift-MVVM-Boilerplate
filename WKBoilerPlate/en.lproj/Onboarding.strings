@@ -1,0 +1,48 @@
+
+/* Class = "UINavigationItem"; title = "Signup"; ObjectID = "6zJ-av-vXP"; */
+"6zJ-av-vXP.title" = "Signup";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "ABC-nd-aUD"; */
+"ABC-nd-aUD.placeholder" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "Eyf-a1-MXb"; */
+"Eyf-a1-MXb.normalTitle" = "Submit";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "Qvo-UL-wAY"; */
+"Qvo-UL-wAY.placeholder" = "Password";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "TrQ-mN-Q5B"; */
+"TrQ-mN-Q5B.placeholder" = "Email";
+
+/* Class = "UINavigationItem"; title = "Login"; ObjectID = "Zem-mn-euf"; */
+"Zem-mn-euf.title" = "Login";
+
+/* Class = "UITextField"; placeholder = "Last Name"; ObjectID = "dNu-iT-EKP"; */
+"dNu-iT-EKP.placeholder" = "Last Name";
+
+/* Class = "UIButton"; normalTitle = "Sign up"; ObjectID = "esP-mQ-hV1"; */
+"esP-mQ-hV1.normalTitle" = "Sign up";
+
+/* Class = "UITextField"; placeholder = "OTP"; ObjectID = "gj4-WI-HYg"; */
+"gj4-WI-HYg.placeholder" = "OTP";
+
+/* Class = "UIButton"; normalTitle = "Sign up"; ObjectID = "iCG-xb-nOx"; */
+"iCG-xb-nOx.normalTitle" = "Sign up";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "kpO-D7-dhU"; */
+"kpO-D7-dhU.placeholder" = "Email";
+
+/* Class = "UINavigationItem"; title = "Verification"; ObjectID = "lsU-bD-cPg"; */
+"lsU-bD-cPg.title" = "Verification";
+
+/* Class = "UITextField"; placeholder = "First Name"; ObjectID = "r3j-rb-J29"; */
+"r3j-rb-J29.placeholder" = "First Name";
+
+/* Class = "UIButton"; normalTitle = "Resend OTP"; ObjectID = "wG9-QE-C3F"; */
+"wG9-QE-C3F.normalTitle" = "Resend OTP";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "zM2-8X-H7S"; */
+"zM2-8X-H7S.normalTitle" = "Login";
+
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "zvH-Yg-UDA"; */
+"zvH-Yg-UDA.normalTitle" = "Login";
