@@ -18,7 +18,12 @@ class ChangePasswordViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = ChangePasswordViewModel()
+        
+        if viewModel == nil {
+            viewModel = ChangePasswordViewModel()
+        }
+        
+        pwdTxtField.isHidden = viewModel.isPwdReset
     }
 
     /// Tap action for change password button
@@ -27,7 +32,8 @@ class ChangePasswordViewController: BaseViewController {
     @IBAction private func changePwdTapAction(sender: UIButton) {
         viewModel.updateProfile(onSuccess: { _ in
             DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
+                self.showMessage(message: "Password updated", title: "")
+                Router.setRootViewController()
             }
         }, onFailure: { errorMsg in
             self.showAPIError(message: errorMsg)

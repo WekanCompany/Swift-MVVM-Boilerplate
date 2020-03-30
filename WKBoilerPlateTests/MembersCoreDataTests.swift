@@ -23,7 +23,7 @@ class MembersCoreDataTests: XCTestCase {
 
    override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
 
@@ -39,7 +39,7 @@ class MembersCoreDataTests: XCTestCase {
 
     /// Test API success handling using a mock json
     func testGetAllUsersSuccessHandling() {
-        OHHTTPStubs.setEnabled(true)
+        HTTPStubs.setEnabled(true)
         let stubbedJSON: [String: Any] =
             ["data":
                 ["users":
@@ -68,7 +68,7 @@ class MembersCoreDataTests: XCTestCase {
         testPath = testPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? testPath
         let expectation = self.expectation(description: "success")
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 jsonObject: stubbedJSON,
                 statusCode: 200,
                 headers: nil
@@ -83,7 +83,7 @@ class MembersCoreDataTests: XCTestCase {
         self.waitForExpectations(timeout: kTimeOutInterval) { _ in
             XCTAssert(true)
         }
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     /// Test API response handling for empty list or empty array
@@ -93,7 +93,7 @@ class MembersCoreDataTests: XCTestCase {
         testPath = testPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? testPath
         let stubbedJSON = ["data": ["users": []]]
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 jsonObject: stubbedJSON,
                 statusCode: 200,
                 headers: nil
@@ -104,7 +104,7 @@ class MembersCoreDataTests: XCTestCase {
         }, onFailure: { _ in
             XCTAssert(false)
         })
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     // Test API failure handling for no network
@@ -113,7 +113,7 @@ class MembersCoreDataTests: XCTestCase {
         let testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
-            return OHHTTPStubsResponse(error: notConnectedError)
+            return HTTPStubsResponse(error: notConnectedError)
         }
         let expectations = expectation(description: notConnectedError.localizedFailureReason ?? notConnectedError.localizedDescription)
         viewModel.getAllUsers(onSuccess: { users in
@@ -126,7 +126,7 @@ class MembersCoreDataTests: XCTestCase {
         waitForExpectations(timeout: kTimeOutInterval) { _ in
             XCTAssert(false)
         }
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     /// Test the slow network handling for Get all users API call
@@ -135,7 +135,7 @@ class MembersCoreDataTests: XCTestCase {
         let testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
-            return OHHTTPStubsResponse(data: Data(), statusCode: 400, headers: nil).responseTime(OHHTTPStubsDownloadSpeed3G)
+            return HTTPStubsResponse(data: Data(), statusCode: 400, headers: nil).responseTime(OHHTTPStubsDownloadSpeed3G)
         }
         let expectations = expectation(description: notConnectedError.localizedFailureReason ?? notConnectedError.localizedDescription)
         viewModel.getAllUsers(onSuccess: { users in
@@ -147,12 +147,12 @@ class MembersCoreDataTests: XCTestCase {
         waitForExpectations(timeout: kTimeOutInterval) { _ in
             XCTAssert(true)
         }
-        OHHTTPStubs.removeAllStubs()
-        OHHTTPStubs.stubRequests(passingTest: { _ -> Bool in
+        HTTPStubs.removeAllStubs()
+        HTTPStubs.stubRequests(passingTest: { _ -> Bool in
             return true
-        }, withStubResponse: { _ -> OHHTTPStubsResponse in
+        }, withStubResponse: { _ -> HTTPStubsResponse in
             let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
-            return OHHTTPStubsResponse(error: notConnectedError)
+            return HTTPStubsResponse(error: notConnectedError)
         })
     }
 }

@@ -68,6 +68,7 @@ class Constants {
         static let users                = "/v1/users"
         static let verifyAccount        = "/verify"
         static let verificationCode     = "/verification-code"
+        static let resetPwd             = "/reset-password"
         static let refreshToken         = "/refresh"
     }
 

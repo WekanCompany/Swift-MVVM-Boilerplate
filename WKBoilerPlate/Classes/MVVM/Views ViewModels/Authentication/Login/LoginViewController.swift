@@ -13,6 +13,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet private weak var pwdTxtField: UITextField!
     @IBOutlet private weak var signupBtn: FilledButton!
     @IBOutlet private weak var loginBtn: FilledButton!
+    @IBOutlet private weak var forgotPwdBtn: BorderedButton!
     @IBOutlet private weak var screenDescriptionLbl: WKLabel!
 
     var viewModel: LoginViewModel! {
@@ -48,14 +49,33 @@ class LoginViewController: BaseViewController {
 
     /// Tap action for login button
     /// - Makes the login API call and navigates to dashboard on success
+    /// - Have 2 success usecases - regular login and login using the temporary password sent to email for resetting pwd
     @IBAction private func loginTapAction(sender: UIButton) {
-        viewModel.emailLogin(onSuccess: { _ in
-            Router.setRootViewController()
+        viewModel.emailLogin(onSuccess: { successMsg in
+            if successMsg as? String == "SetPassword" {
+                guard let setPwdVC = Router.getVCFromMainStoryboard(withId:
+                    "ChangePasswordViewController") as? ChangePasswordViewController else {
+                    return
+                }
+                setPwdVC.viewModel = ChangePasswordViewModel()
+                setPwdVC.viewModel.isPwdReset = true
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(setPwdVC, animated: true)
+                }
+            } else {
+                Router.setRootViewController()
+            }
         }, onFailure: { (errorMsg: String) in
             self.showAPIError(message: errorMsg)
         }, onValidationFailure: { validationMsg in
             self.showValidationError(message: validationMsg)
         })
+    }
+    
+    /// forgot password button action
+    /// - Parameter sender: forgot password butto
+    @IBAction private func forgotPwdTapAction(sender: UIButton) {
+        self.resetFields()
     }
 }
 

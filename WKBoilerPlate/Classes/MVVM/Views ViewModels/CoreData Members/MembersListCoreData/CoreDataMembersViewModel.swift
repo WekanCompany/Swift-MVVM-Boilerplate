@@ -39,7 +39,7 @@ class CoreDataMembersViewModel {
      - Parameter failure: callback for API failure
      */
     func getAllUsers(onSuccess success: @escaping OnSuccess, onFailure failure: @escaping OnFailure) {
-        var endPoint = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
+        var endPoint = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc&offset=0&limit=10"
         endPoint = endPoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? endPoint
         NetworkHandler.apiRequest(endPoint: endPoint, paramDict: [:], method: .get, onSuccess: { responseDict in
             // Parse users data

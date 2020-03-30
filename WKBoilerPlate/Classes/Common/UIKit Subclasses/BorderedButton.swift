@@ -9,7 +9,6 @@
 import UIKit
 
 class BorderedButton: UIButton {
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,7 +26,12 @@ class BorderedButton: UIButton {
      */
     func setBoldFontOfSize(size: CGFloat) {
         let customFont = UIFont.openSansBoldFont(withSize: size).adaptiveResize()
-        self.titleLabel?.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: customFont)
+        if #available(iOS 11.0, *) {
+            self.titleLabel?.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: customFont)
+        } else {
+            // Fallback on earlier versions
+            self.titleLabel?.font = customFont.adaptiveResize()
+        }
         self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
     /**
@@ -35,7 +39,12 @@ class BorderedButton: UIButton {
      */
     func setLightFontOfSize(size: CGFloat) {
         let customFont = UIFont.openSansRegularFont(withSize: size).adaptiveResize()
-        self.titleLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
+        if #available(iOS 11.0, *) {
+            self.titleLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
+        } else {
+            // Fallback on earlier versions
+            self.titleLabel?.font = customFont.adaptiveResize()
+        }
         self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 }

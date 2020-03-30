@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0821071524066BCC009C25A8 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0821071324066BCC009C25A8 /* AppConfig.swift */; };
+		0821071624066BCC009C25A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0821071424066BCC009C25A8 /* Constants.swift */; };
+		08DDA5B424091E8400F6858B /* ForgotPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDA5B324091E8400F6858B /* ForgotPwdViewController.swift */; };
+		08DDA5B624091E9C00F6858B /* ForgotPwdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDA5B524091E9C00F6858B /* ForgotPwdViewModel.swift */; };
 		20C0952D7816BC5A076DE5A1 /* Pods_WKBoilerPlate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0337E78080A86A0EA356201E /* Pods_WKBoilerPlate.framework */; };
 		65BB15652BA7D55478DF900B /* Pods_WKBoilerPlateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5852DCD91889F4B27CE1B11B /* Pods_WKBoilerPlateTests.framework */; };
 		F5078185232F0A7600EAA740 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5078184232F0A7600EAA740 /* AppDelegate.swift */; };
@@ -16,8 +20,6 @@
 		F5078192232F0A7700EAA740 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5078190232F0A7700EAA740 /* LaunchScreen.storyboard */; };
 		F507819D232F0A7700EAA740 /* WKBoilerPlateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F507819C232F0A7700EAA740 /* WKBoilerPlateTests.swift */; };
 		F50781A8232F0A7700EAA740 /* WKBoilerPlateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781A7232F0A7700EAA740 /* WKBoilerPlateUITests.swift */; };
-		F50781F7232F0CDA00EAA740 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781D5232F0CDA00EAA740 /* Constants.swift */; };
-		F50781F8232F0CDA00EAA740 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781D6232F0CDA00EAA740 /* AppConfig.swift */; };
 		F50781F9232F0CDA00EAA740 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781D8232F0CDA00EAA740 /* UserManager.swift */; };
 		F50781FA232F0CDA00EAA740 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781DA232F0CDA00EAA740 /* ViewExtension.swift */; };
 		F50781FB232F0CDA00EAA740 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50781DB232F0CDA00EAA740 /* ColorExtension.swift */; };
@@ -85,6 +87,10 @@
 		021D1F30FF7DC3718B9E9374 /* Pods-WKBoilerPlateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlateTests.release.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlateTests/Pods-WKBoilerPlateTests.release.xcconfig"; sourceTree = "<group>"; };
 		023D4DDDA98205DE575C7E5E /* Pods-WKBoilerPlateTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlateTests.debug.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlateTests/Pods-WKBoilerPlateTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0337E78080A86A0EA356201E /* Pods_WKBoilerPlate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WKBoilerPlate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0821071324066BCC009C25A8 /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppConfig.swift; path = WKBoilerPlate/Classes/Common/Config/AppConfig.swift; sourceTree = SOURCE_ROOT; };
+		0821071424066BCC009C25A8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = WKBoilerPlate/Classes/Common/Config/Constants.swift; sourceTree = SOURCE_ROOT; };
+		08DDA5B324091E8400F6858B /* ForgotPwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewController.swift; sourceTree = "<group>"; };
+		08DDA5B524091E9C00F6858B /* ForgotPwdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewModel.swift; sourceTree = "<group>"; };
 		21DEE41B7DD39FCB562AD11F /* Pods-WKBoilerPlate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlate.release.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlate/Pods-WKBoilerPlate.release.xcconfig"; sourceTree = "<group>"; };
 		5852DCD91889F4B27CE1B11B /* Pods_WKBoilerPlateTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WKBoilerPlateTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5078181232F0A7600EAA740 /* WKBoilerPlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WKBoilerPlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,8 +106,6 @@
 		F50781A3232F0A7700EAA740 /* WKBoilerPlateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WKBoilerPlateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F50781A7232F0A7700EAA740 /* WKBoilerPlateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKBoilerPlateUITests.swift; sourceTree = "<group>"; };
 		F50781A9232F0A7700EAA740 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F50781D5232F0CDA00EAA740 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		F50781D6232F0CDA00EAA740 /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		F50781D8232F0CDA00EAA740 /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		F50781DA232F0CDA00EAA740 /* ViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		F50781DB232F0CDA00EAA740 /* ColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
@@ -180,6 +184,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08DDA5B224091E4300F6858B /* Reset Pwd */ = {
+			isa = PBXGroup;
+			children = (
+				08DDA5B324091E8400F6858B /* ForgotPwdViewController.swift */,
+				08DDA5B524091E9C00F6858B /* ForgotPwdViewModel.swift */,
+			);
+			path = "Reset Pwd";
+			sourceTree = "<group>";
+		};
 		30685A133422F9000871A6F3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,7 +278,7 @@
 		F50781D3232F0CDA00EAA740 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				F50781D4232F0CDA00EAA740 /* Config & Constants */,
+				F50781D4232F0CDA00EAA740 /* Config */,
 				F50781E1232F0CDA00EAA740 /* Services */,
 				F50781D7232F0CDA00EAA740 /* Singletons */,
 				F50781D9232F0CDA00EAA740 /* Extensions */,
@@ -274,13 +287,13 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		F50781D4232F0CDA00EAA740 /* Config & Constants */ = {
+		F50781D4232F0CDA00EAA740 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				F50781D6232F0CDA00EAA740 /* AppConfig.swift */,
-				F50781D5232F0CDA00EAA740 /* Constants.swift */,
+				0821071324066BCC009C25A8 /* AppConfig.swift */,
+				0821071424066BCC009C25A8 /* Constants.swift */,
 			);
-			path = "Config & Constants";
+			path = Config;
 			sourceTree = "<group>";
 		};
 		F50781D7232F0CDA00EAA740 /* Singletons */ = {
@@ -328,8 +341,8 @@
 		F5078203232F0D2500EAA740 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				F5078212232F0E6100EAA740 /* Onboarding.storyboard */,
 				F5078190232F0A7700EAA740 /* LaunchScreen.storyboard */,
+				F5078212232F0E6100EAA740 /* Onboarding.storyboard */,
 				F5078188232F0A7600EAA740 /* Main.storyboard */,
 			);
 			name = Storyboards;
@@ -429,6 +442,7 @@
 		F55B2F8323301C0100B20206 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				08DDA5B224091E4300F6858B /* Reset Pwd */,
 				F55B2F8A23301C0100B20206 /* Login */,
 				F55B2F8423301C0100B20206 /* Signup */,
 				F55B2F8723301C0100B20206 /* OTP Verification */,
@@ -527,6 +541,7 @@
 				F507817E232F0A7600EAA740 /* Frameworks */,
 				F507817F232F0A7600EAA740 /* Resources */,
 				F54791DE23E19F84000DD83B /* ShellScript */,
+				846E179FCA676A35BCCFEA82 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -674,6 +689,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		846E179FCA676A35BCCFEA82 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WKBoilerPlate/Pods-WKBoilerPlate-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WKBoilerPlate/Pods-WKBoilerPlate-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WKBoilerPlate/Pods-WKBoilerPlate-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ADA9BBE4A0F976F69D1B01B3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -723,13 +755,14 @@
 				F5E86FA32396471B00004979 /* AddMemberViewModel.swift in Sources */,
 				F55B2F9D23301C0100B20206 /* LoginViewController.swift in Sources */,
 				F55B2F9723301C0100B20206 /* EditProfileViewModel.swift in Sources */,
+				0821071524066BCC009C25A8 /* AppConfig.swift in Sources */,
 				F50781FB232F0CDA00EAA740 /* ColorExtension.swift in Sources */,
 				F59B6A2B23327D50000A74E0 /* TextViewExtension.swift in Sources */,
-				F50781F8232F0CDA00EAA740 /* AppConfig.swift in Sources */,
 				F50781FC232F0CDA00EAA740 /* StringExtension.swift in Sources */,
 				F50781FE232F0CDA00EAA740 /* BorderedButton.swift in Sources */,
 				F55B2F9023301C0100B20206 /* User.swift in Sources */,
 				F59B6A2D23327D7A000A74E0 /* TextFieldExtension.swift in Sources */,
+				0821071624066BCC009C25A8 /* Constants.swift in Sources */,
 				F5078202232F0CDA00EAA740 /* Helper.swift in Sources */,
 				F51FC1912330A7FB001CA910 /* RealmMembersViewController.swift in Sources */,
 				F55B2F9B23301C0100B20206 /* OTPVerificationViewModel.swift in Sources */,
@@ -742,8 +775,9 @@
 				F5E86FA1239646B700004979 /* CoreDataMembersViewController.swift in Sources */,
 				F59B6A2F23327DC6000A74E0 /* FontExtension.swift in Sources */,
 				F5E86FA0239646B700004979 /* CoreDataMembersViewModel.swift in Sources */,
+				08DDA5B624091E9C00F6858B /* ForgotPwdViewModel.swift in Sources */,
+				08DDA5B424091E8400F6858B /* ForgotPwdViewController.swift in Sources */,
 				F55B2F9523301C0100B20206 /* MyProfileViewController.swift in Sources */,
-				F50781F7232F0CDA00EAA740 /* Constants.swift in Sources */,
 				F5078200232F0CDA00EAA740 /* Router.swift in Sources */,
 				F5078201232F0CDA00EAA740 /* NetworkHandler.swift in Sources */,
 				F55B2F9223301C0100B20206 /* ChangePasswordViewController.swift in Sources */,
@@ -963,6 +997,7 @@
 				DEVELOPMENT_TEAM = H972GMBYZ9;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = WKBoilerPlate/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -984,6 +1019,7 @@
 				DEVELOPMENT_TEAM = H972GMBYZ9;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = WKBoilerPlate/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

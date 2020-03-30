@@ -19,7 +19,12 @@ class WKLabel: UILabel {
      */
     func setBoldFontOfSize(size: CGFloat) {
         let customFont = UIFont.openSansBoldFont(withSize: size).adaptiveResize()
-        self.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: customFont)
+        if #available(iOS 11.0, *) {
+            self.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: customFont)
+        } else {
+            // Fallback on earlier versions
+            self.font = customFont.adaptiveResize()
+        }
         self.adjustsFontForContentSizeCategory = true
     }
     /**
@@ -27,7 +32,12 @@ class WKLabel: UILabel {
      */
     func setLightFontOfSize(size: CGFloat) {
         let customFont = UIFont.openSansRegularFont(withSize: size).adaptiveResize()
-        self.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
+        if #available(iOS 11.0, *) {
+            self.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
+        } else {
+            // Fallback on earlier versions
+            self.font = customFont.adaptiveResize()
+        }
         self.adjustsFontForContentSizeCategory = true
     }
 }

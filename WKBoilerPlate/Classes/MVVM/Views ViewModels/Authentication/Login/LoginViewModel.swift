@@ -19,12 +19,20 @@ class LoginViewModel {
     func validateForm(success onTaskSuccess: OnTaskSuccess, failure onFailure: @escaping OnFailure) {
         let email = self.loginModel.value.email?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let password = self.loginModel.value.password?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if email.isEmpty && password.isEmpty {
+            onFailure("Please enter the email and password to login")
+            return
+        }
         if email.isEmpty {
             onFailure("Please enter the email")
             return
         }
         if password.isEmpty {
             onFailure("Please enter the password")
+            return
+        }
+        if !email.isValidEmail() {
+            onFailure("Please enter a valid email")
             return
         }
         onTaskSuccess(true)
@@ -48,24 +56,26 @@ class LoginViewModel {
             NetworkHandler.apiRequest(endPoint: endPoint,
                                       paramData: encodedData,
                                       method: .post,
-                                      onSuccess: { (responseDict) in
-                print(responseDict)
-                // Save user info singleton, if required
-                if let dataDict = responseDict["data"] as? [String: Any] {
-                    let jsonData = try? JSONSerialization.data(withJSONObject: dataDict, options: .prettyPrinted)
-                    let decodedData = try? JSONDecoder().decode(User.self, from: jsonData ?? Data())
-                    UserManager.shared.user = decodedData
-                }
-                //save to userdefaults
-                let dataDict = responseDict["data"] as? [String: Any]
-                let userDict = dataDict?["user"] as? [String: Any]
-                UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
-                UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Constants.Defaults.userTmpPassword)
-                success("Success")
+                                      onSuccess:
+                { (responseDict) in
+                    print(responseDict)
+                    // Save user info singleton, if required
+                    if let dataDict = responseDict["data"] as? [String: Any] {
+                        let jsonData = try? JSONSerialization.data(withJSONObject: dataDict, options: .prettyPrinted)
+                        let decodedData = try? JSONDecoder().decode(User.self, from: jsonData ?? Data())
+                        UserManager.shared.user = decodedData
+                    }
+                    //save to userdefaults
+                    let dataDict = responseDict["data"] as? [String: Any]
+                    let userDict = dataDict?["user"] as? [String: Any]
+                    UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
+                    UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
+                    UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
+                    UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
+                    UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
+                    UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Constants.Defaults.userTmpPassword)
+                    let tempPwdForReset = userDict?["tmpPassword"] as? String ?? ""
+                    success(tempPwdForReset.isEmpty ? "Success" : "SetPassword")
             }, onFailure: { (errorMsg, errorType) in
                 print(errorMsg)
                 print(errorType)

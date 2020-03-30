@@ -3,16 +3,16 @@
 
 target 'WKBoilerPlate’ do
 
-#   pod 'OHHTTPStubs/Swift'
+   pod 'OHHTTPStubs/Swift'
 
-   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+#    Uncomment the next line if you're using Swift or would like to use dynamic frameworks
    use_frameworks!
-#   pod 'Alamofire'
-#   pod 'RealmSwift'
-#   pod 'Firebase/Core'
-#   pod 'Firebase/Messaging'
-#   pod 'TPKeyboardAvoiding'
-#   pod 'SwiftLint'
+   pod 'Alamofire'
+   pod 'RealmSwift'
+   pod 'Firebase/Core'
+   pod 'Firebase/Messaging'
+   pod 'TPKeyboardAvoiding'
+   pod 'SwiftLint'
 
   target 'WKBoilerPlateTests' do
     inherit! :search_paths

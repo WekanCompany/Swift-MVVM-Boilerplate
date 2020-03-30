@@ -44,14 +44,13 @@ class NetworkHandler {
      To construct the HTTP Headers for all requests
      - returns: HTTPHeaders as Dictionary
      */
-    static func getHttpHeaders(forRequest isMultipart: Bool) -> [String: String] {
+    static func getHttpHeaders(forRequest isMultipart: Bool) -> HTTPHeaders {
         let type = isMultipart ? RequestContentType.multipartFormData.rawValue : RequestContentType.json.rawValue
-        var headers: HTTPHeaders = [:]
-        headers["Content-Type"] = type
+        var headers: [HTTPHeader] = [HTTPHeader(name: "Content-Type", value: type)]
         if !NetworkHandler.getBasicAuthentication()!.isEmpty {
-            headers["Authorization"] =  NetworkHandler.getBasicAuthentication()!
+            headers.append(HTTPHeader(name: "Authorization", value: NetworkHandler.getBasicAuthentication()!))
         }
-        return headers
+        return HTTPHeaders(headers)
     }
 
     /**
@@ -103,9 +102,17 @@ class NetworkHandler {
         let request = NSMutableURLRequest(url: NSURL(string: postUrl)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: kTimeOutInterval)
-        request.allHTTPHeaderFields = self.getHttpHeaders(forRequest: false)
+        request.allHTTPHeaderFields = self.getHttpHeaders(forRequest: false).dictionary
         request.httpMethod = method.rawValue
-        request.httpBody = (paramData != nil) ? paramData : nil
+        do {
+            let json = try JSONSerialization.jsonObject(with: paramData!, options: []) as? [String: Any]
+            if json?.count ?? 0 > 0 {
+                request.httpBody = (paramData != nil) ? paramData : nil
+            }
+            print(json ?? [:])
+        } catch {
+            print("params json serialization error ")
+        }
         print(postUrl)
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request as URLRequest,
@@ -129,6 +136,16 @@ class NetworkHandler {
             }
          })
         dataTask.resume()
+    }
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
 
     /**
@@ -154,7 +171,9 @@ class NetworkHandler {
             print(postUrl)
             print(paramDict)
             print(files)
-            Alamofire.upload(multipartFormData: { multipartFormData in
+            
+            var response: DataResponse<Data?, AFError>?
+            AF.upload(multipartFormData: { multipartFormData in
                 //params
                 for(key, value) in paramDict {
                     let strVal = value as? String
@@ -177,16 +196,14 @@ class NetworkHandler {
                 default:
                     break
                 }
-            }, usingThreshold: UInt64(),
-               to: postUrl,
-               method: method,
-               headers: self.getHttpHeaders(forRequest: true), encodingCompletion: { encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.responseJSON { response in
-                        debugPrint(response)
-                        let jsonDict = response.result.value as? [String: Any] ?? [:]
-                        let statusCode = response.response?.statusCode ?? 0
+            }, to: postUrl).response { resp in
+                response = resp
+                do {
+                    // here "decoded" is of type `Any`, decoded from JSON data
+                    let decoded = try JSONSerialization.jsonObject(with: response?.data ?? Data(), options: [])
+                    // you can now cast it with the right type
+                    if let jsonDict = decoded as? [String: String] {
+                        let statusCode = resp.response?.statusCode ?? 0
                         if !jsonDict.isEmpty {
                             // success response for statuscode 200 series
                             if statusCode > 199 && statusCode < 300 {
@@ -196,16 +213,17 @@ class NetworkHandler {
                                 NetworkHandler.handleErrorFromResponseJSON(jsonData: jsonDict,
                                                                            statusCode: statusCode,
                                                                            failureCallBack: { errorMessage in
+                                                                            print(errorMessage)
                                     failure(errorMessage, .invalidResponseError)
                                 })
                             }
                         }
                     }
-                case .failure(let encodingError):
-                    print(encodingError)
-                    failure(encodingError.localizedDescription, ErrorType.httpError)
+                } catch {
+                    print(error.localizedDescription)
+                    failure(error.localizedDescription, ErrorType.httpError)
                 }
-            })
+            }
         }
     }
 
@@ -226,22 +244,22 @@ class NetworkHandler {
         if let dictFromJSON = responseData as? [String: Any] {
             print(dictFromJSON as Any)
             switch statusCode {
-            case 200...203, 205...299:
+            case 200...299:
                 onAPISuccess(dictFromJSON)
-            case 204:
-                if jsonData.isEmpty {
-                    onAPISuccess([:])
-                } else {
-                    onAPIFailure("Unknown Error", ErrorType.invalidResponseError)
-                }
             default:
                 NetworkHandler.handleErrorFromResponseJSON(jsonData: dictFromJSON,
                                                            statusCode: statusCode,
                                                            failureCallBack: { errorMessage in
+                                                            print(errorMessage)
                     onAPIFailure(errorMessage, .httpError)
                 })
             }
-         }
+        } else if statusCode == 204 {
+            // Usually on a successful api hit, if an email/sms got triggered and there is no data to be returned, the data will be returned empty.
+            if jsonData.isEmpty {
+                onAPISuccess([:])
+            }
+        }
     }
 
     // MARK: - Response Error Handling
@@ -256,7 +274,7 @@ class NetworkHandler {
                                             statusCode: Int,
                                             failureCallBack onFailure: @escaping OnFailure) {
         //Handle Auth Token expiry
-        if statusCode == 401 {
+        if statusCode == 401 && !NetworkHandler.getBasicAuthentication()!.isEmpty {
             UserManager.shared.refreshToken { success in
                 if success {
                     onFailure("Session restored. Please retry.")
@@ -266,19 +284,51 @@ class NetworkHandler {
             }
         } else {
             guard let msg = jsonData[Constants.ResponseKey.messages] as? String else {
+                let fallbackErrorMessage = "Something went wrong, please retry."
                 let errors = jsonData[Constants.ResponseKey.errors]
                 if errors != nil {
                     if errors is [String: Any] {
                         let errorDict = errors as? [String: Any]
-                        let messages = errorDict?[Constants.ResponseKey.messages] as? [String]
-                        guard let errorMessage = messages?[0] else { return }
-                        onFailure(errorMessage)
+                        let messages = errorDict?[Constants.ResponseKey.messages]
+                        if messages is String {
+                            /* ["errors": {
+                                   messages = "xyz must be a valid integer value"
+                                 }]  */
+                            onFailure(messages as? String ?? fallbackErrorMessage)
+                            return
+                        } else if messages is [String] {
+                            /* ["errors": {
+                                   messages =   (
+                                         "xyz must be a valid integer value"
+                                   );
+                                 }]  */
+                            let messagesArray = messages as? [String]
+                            onFailure(messagesArray?[0] ?? fallbackErrorMessage)
+                            return
+                        } else if messages is [String: Any] {
+                            /* ["errors": {
+                                    messages =   (
+                                          age: "xyz must be a valid integer value"
+                                    );
+                                  }]  */
+                            let errorMessagesDict = messages as? [String: Any] ?? [:]
+                            for key in errorMessagesDict.keys where errorMessagesDict[key] is String {
+                                let errMsg = errorMessagesDict[key] as? String ?? fallbackErrorMessage
+                                onFailure(errMsg)
+                                return
+                            }
+                        }
+                    } else if errors is String {
+                        /* ["errors": "xyz must be a valid integer value"]  */
+                        let errorMessage = errors as? String
+                        onFailure(errorMessage ?? fallbackErrorMessage)
                         return
                     }
                 }
-                onFailure("Unknown Error")
+                onFailure(fallbackErrorMessage)
                 return
             }
+            /* ["messages": "xyz"]  */
             onFailure(msg)
         }
     }

@@ -72,7 +72,7 @@ class SignupViewModel {
             return
         }
         if password.isValidPassword() == false {
-            onFailure("Password is in invalid format")
+            onFailure("Password validation alert".localizeText())
             return
         }
         onTaskSuccess(true)
