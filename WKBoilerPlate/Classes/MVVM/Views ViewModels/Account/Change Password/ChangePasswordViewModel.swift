@@ -9,7 +9,6 @@
 import Foundation
 
 class ChangePasswordViewModel {
-    
     var oldPwd: Dynamic<String>
     var newPwd: Dynamic<String>
     var confirmNewPwd: Dynamic<String>

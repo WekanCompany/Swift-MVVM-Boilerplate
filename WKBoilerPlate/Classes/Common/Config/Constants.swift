@@ -77,6 +77,8 @@ class Constants {
         static let success              = "data"
         static let errors               = "errors"
         static let messages             = "messages"
+        static let constraints          = "constraints"
+        
     }
 
     /// List of all Storyboards used in the app.

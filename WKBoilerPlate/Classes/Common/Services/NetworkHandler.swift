@@ -126,10 +126,11 @@ class NetworkHandler {
                 print(error as Any)
                 failure(error?.localizedDescription ?? "", .httpError)
             } else {
-                NetworkHandler.handleResponseData(jsonData: data!,
-                                                  statusCode: statusCode,
-                                                  successCallback: { responseDict in
-                    success(responseDict)
+                NetworkHandler.handleResponse(forRequest: postUrl,
+                                              response: data!,
+                                              statusCode: statusCode,
+                                              successCallback: { responseDict in
+                     success(responseDict)
                 }, failureCallback: { errorMsg, errorType in
                     failure(errorMsg, errorType)
                 })
@@ -137,6 +138,10 @@ class NetworkHandler {
          })
         dataTask.resume()
     }
+    
+    /// convert a json String to Dictionary
+    /// - Parameter text: json String
+    /// - Returns: converted Dictionary
     func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
@@ -210,11 +215,12 @@ class NetworkHandler {
                                 success(jsonDict)
                             } else {
                                 // error handling for all other status codes
-                                NetworkHandler.handleErrorFromResponseJSON(jsonData: jsonDict,
-                                                                           statusCode: statusCode,
-                                                                           failureCallBack: { errorMessage in
-                                                                            print(errorMessage)
-                                    failure(errorMessage, .invalidResponseError)
+                                NetworkHandler.handleErrorFromResponse(forRequest: postUrl,
+                                                                       response: jsonDict,
+                                                                       statusCode: statusCode,
+                                                                       failureCallBack: { errorMessage in
+                                                                        print(errorMessage)
+                                                                        failure(errorMessage, .invalidResponseError)
                                 })
                             }
                         }
@@ -230,33 +236,35 @@ class NetworkHandler {
     // MARK: - Response Data Handling
 
     /**
-    Common method to handle the response data from all APIs
-    - Parameter jsonData: response Data
-    - Parameter statusCode: HTTP status code received
-    - Parameter OnApiSuccess: success handler, returns response JSON
-    - Parameter OnAPIFailure: error handler, returns error message to be displayed and  the error type as well
-    */
-    static func handleResponseData(jsonData: Data,
-                                   statusCode: Int,
-                                   successCallback onAPISuccess: @escaping OnApiSuccess,
-                                   failureCallback onAPIFailure: @escaping OnApiFailure) {
-        let responseData = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments)
-        if let dictFromJSON = responseData as? [String: Any] {
+     Common method to handle the response data from all APIs
+     - Parameter requestUrl: request URL as String
+     - Parameter responseJsonData: response JSON as Data
+     - Parameter onAPISuccess: success handler, returns response JSON
+     - Parameter onAPIFailure: error handler, returns error message to be displayed and  the error type as well
+     */
+    static func handleResponse(forRequest requestUrl: String,
+                               response responseJsonData: Data,
+                               statusCode: Int,
+                               successCallback onAPISuccess: @escaping OnApiSuccess,
+                               failureCallback onAPIFailure: @escaping OnApiFailure) {
+        let responseDict = try? JSONSerialization.jsonObject(with: responseJsonData, options: .allowFragments)
+        if let dictFromJSON = responseDict as? [String: Any] {
             print(dictFromJSON as Any)
             switch statusCode {
             case 200...299:
                 onAPISuccess(dictFromJSON)
             default:
-                NetworkHandler.handleErrorFromResponseJSON(jsonData: dictFromJSON,
-                                                           statusCode: statusCode,
-                                                           failureCallBack: { errorMessage in
-                                                            print(errorMessage)
-                    onAPIFailure(errorMessage, .httpError)
+                NetworkHandler.handleErrorFromResponse(forRequest: requestUrl,
+                                                       response: dictFromJSON,
+                                                       statusCode: statusCode,
+                                                       failureCallBack: { errorMessage in
+                                                        print(errorMessage)
+                                                        onAPIFailure(errorMessage, .httpError)
                 })
             }
         } else if statusCode == 204 {
             // Usually on a successful api hit, if an email/sms got triggered and there is no data to be returned, the data will be returned empty.
-            if jsonData.isEmpty {
+            if responseJsonData.isEmpty {
                 onAPISuccess([:])
             }
         }
@@ -266,15 +274,22 @@ class NetworkHandler {
 
     /**
      Common method to handle all error Responses from all APIs
-     - Parameter jsonData: error dictionary
+     - Parameter requestUrl: request URL as String
+     - Parameter jsonDict: response JSON as Dict
      - Parameter statusCode: HTTP error code or status code received
      - Parameter onFailure: error handler, returns error message to be displayed to user when required.
      */
-    static func handleErrorFromResponseJSON(jsonData: [String: Any],
-                                            statusCode: Int,
-                                            failureCallBack onFailure: @escaping OnFailure) {
+    static func handleErrorFromResponse(forRequest requestUrl: String,
+                                        response jsonDict: [String: Any],
+                                        statusCode: Int,
+                                        failureCallBack onFailure: @escaping OnFailure) {
+        let hasAuthToken: Bool = !NetworkHandler.getBasicAuthentication()!.isEmpty
+        let isLoginApiCall: Bool = requestUrl.hasSuffix(Constants.EndPoint.login)
+        
         //Handle Auth Token expiry
-        if statusCode == 401 && !NetworkHandler.getBasicAuthentication()!.isEmpty {
+        // 401 could happen for authentication failure or token expiry.
+        // Token expiry is handled in IF case. authentication failure is handled in common error handling
+        if statusCode == 401 && ( hasAuthToken || !isLoginApiCall) {
             UserManager.shared.refreshToken { success in
                 if success {
                     onFailure("Session restored. Please retry.")
@@ -283,9 +298,9 @@ class NetworkHandler {
                 }
             }
         } else {
-            guard let msg = jsonData[Constants.ResponseKey.messages] as? String else {
+            guard let msg = jsonDict[Constants.ResponseKey.messages] as? String else {
                 let fallbackErrorMessage = "Something went wrong, please retry."
-                let errors = jsonData[Constants.ResponseKey.errors]
+                let errors = jsonDict[Constants.ResponseKey.errors]
                 if errors != nil {
                     if errors is [String: Any] {
                         let errorDict = errors as? [String: Any]
@@ -307,13 +322,36 @@ class NetworkHandler {
                             return
                         } else if messages is [String: Any] {
                             /* ["errors": {
-                                    messages =   (
-                                          age: "xyz must be a valid integer value"
-                                    );
+                                    messages =   {
+                                          age: "xyz must be a valid integer value",
+                                          gender: "abc must be a valid enum value"
+                                    }
                                   }]  */
                             let errorMessagesDict = messages as? [String: Any] ?? [:]
                             for key in errorMessagesDict.keys where errorMessagesDict[key] is String {
                                 let errMsg = errorMessagesDict[key] as? String ?? fallbackErrorMessage
+                                onFailure(errMsg)
+                                return
+                            }
+                        } else if messages is [[String: Any]] {
+                            /* {
+                                "errors": {
+                                    "messages": [
+                                        {
+                                            "property": "communicationMode",
+                                            "value": 4,
+                                            "constraints": {
+                                                "isEnum": "communicationMode must be a valid enum value"
+                                            }
+                                        }
+                                    ]
+                                }
+                             } */
+                            let messagesArray = messages as? [[String: Any]]
+                            let errorMessagesDict = messagesArray?[0] ?? [:]
+                            let errorConstraints = errorMessagesDict[Constants.ResponseKey.constraints] as? [String: Any] ?? [:]
+                            for key in errorConstraints.keys where errorConstraints[key] is String {
+                                let errMsg = errorConstraints[key] as? String ?? fallbackErrorMessage
                                 onFailure(errMsg)
                                 return
                             }

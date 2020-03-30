@@ -56,8 +56,7 @@ class LoginViewModel {
             NetworkHandler.apiRequest(endPoint: endPoint,
                                       paramData: encodedData,
                                       method: .post,
-                                      onSuccess:
-                { (responseDict) in
+                                      onSuccess: { responseDict in
                     print(responseDict)
                     // Save user info singleton, if required
                     if let dataDict = responseDict["data"] as? [String: Any] {
