@@ -9,25 +9,6 @@
 import Foundation
 import UIKit
 
-/// Enum with all types of Files the app supports for upload .
-/// - raw value : Int
-enum UploadFileType: Int {
-    case text = 1
-    case imageFile = 2
-    case videoFile = 3
-    case audioFile = 4
-}
-
-/// Enum with all types of Failures/errors that occurs on an API call .
-/// - raw value : Int
-enum ErrorType: Int {
-    case httpError = 0
-    case invalidResponseError = 1
-    case networkError = 2
-    case sessionExpiry = 3
-    case unknownError = 4
-}
-
 class Constants {
     /** An instance for the AppDelegate which is UIApplication.shared.delegate */
     static let appDelegate: AppDelegate = UIApplication.shared.delegate as? AppDelegate ?? AppDelegate()

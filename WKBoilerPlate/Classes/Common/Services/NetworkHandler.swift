@@ -14,11 +14,27 @@ typealias OnFailure = (_ errorMessage: String) -> Void
 typealias OnApiSuccess = (_ jsondata: [String: Any]) -> Void
 typealias OnApiFailure = (_ errorMessage: String, _ errorType: ErrorType) -> Void
 typealias OnTaskSuccess = (_ status: Bool) -> Void
+typealias FilesToUpload = (fileType: Int, fileNamesAndFilesDict: [String: Any])
 
-let kTimeOutInterval = 60.0
-let networkFailureMessage = "Please check your internet connection"
-let sessionExpiryMessage = "Session Expired. Please retry"
-
+/// Enum with all types of Failures/errors that occurs on an API call .
+/// - raw value : Int
+enum ErrorType: Int {
+    case httpError = 0
+    case invalidResponseError = 1
+    case networkError = 2
+    case sessionExpiry = 3
+    case unknownError = 4
+}
+/// Enum with all types of Files the app supports for upload .
+/// - raw value : Int
+enum UploadFileType: Int {
+    case text = 1
+    case imageFile = 2
+    case videoFile = 3
+    case audioFile = 4
+}
+/// Content-Type for Requests
+/// - raw value : String
 enum RequestContentType: String {
     case json = "application/json"
     case xml = "application/xml"
@@ -26,6 +42,11 @@ enum RequestContentType: String {
     case multipartFormData = "multipart/form-data"
     case formUrlEncoded = "application/x-www-form-urlencoded"
 }
+
+let baseUrlForAPIEndpoints = AppConfig.activeBaseURL + "/" + AppConfig.currentApiVersion
+let kTimeOutInterval = 60.0
+let networkFailureMessage = "Please check your internet connection"
+let sessionExpiryMessage = "Session Expired. Please retry"
 
 class NetworkHandler {
     /**
@@ -37,6 +58,7 @@ class NetworkHandler {
         guard let sessionToken = UserDefaults.standard.object(forKey: Constants.Defaults.authToken) as? String else {
             return ""
         }
+        print("AuthToken: \(sessionToken)")
         return sessionToken.isEmpty ? "" : "Bearer \(sessionToken)"
     }
 
@@ -97,8 +119,9 @@ class NetworkHandler {
                            onFailure failure: @escaping OnApiFailure) {
         if NetworkReachabilityManager()!.isReachable == false {
             failure(networkFailureMessage, ErrorType.networkError)
+            return
         }
-        let postUrl: String = AppConfig.getActiveBaseURL() + endPoint
+        let postUrl: String = baseUrlForAPIEndpoints + endPoint
         let request = NSMutableURLRequest(url: NSURL(string: postUrl)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: kTimeOutInterval)
@@ -119,13 +142,13 @@ class NetworkHandler {
                                         completionHandler: { data, response, error -> Void in
             let httpResponse = response as? HTTPURLResponse
             print(httpResponse as Any)
-            guard let statusCode = (httpResponse?.statusCode) else {
-                return
-            }
             if error != nil {
                 print(error as Any)
                 failure(error?.localizedDescription ?? "", .httpError)
             } else {
+                guard let statusCode = (httpResponse?.statusCode) else {
+                    return
+                }
                 NetworkHandler.handleResponse(forRequest: postUrl,
                                               response: data!,
                                               statusCode: statusCode,
@@ -158,21 +181,21 @@ class NetworkHandler {
      - supported HTTP methods - POST
      - Parameter endPoint: API endpoint
      - Parameter paramDict: a dictionary with request parameters
-     - Parameter filesDict: a dictionary with the files to upload
+     - Parameter files: a tuple of type FilesToUpload. It has fileType and files dictionary to upload
      - Parameter method: HTTP method type
      - Parameter OnApiSuccess: success handler, return response JSON
      - Parameter OnApiFailure: error handler, return error message and error code
      */
     static func serviceCallForMultipartFormData(endPoint: String,
                                                 paramDict: [String: Any],
-                                                files: (Int, [String: Any]),
+                                                files: FilesToUpload,
                                                 method: HTTPMethod,
                                                 onSuccess success: @escaping OnApiSuccess,
                                                 onFailure failure: @escaping OnApiFailure) {
         if NetworkReachabilityManager()!.isReachable == false {
             failure("Please check your internet connection", .networkError)
         } else {
-            let postUrl: String = AppConfig.getActiveBaseURL() + endPoint
+            let postUrl: String = baseUrlForAPIEndpoints + endPoint
             print(postUrl)
             print(paramDict)
             print(files)
@@ -186,9 +209,9 @@ class NetworkHandler {
                     multipartFormData.append(valueAsData ?? Data(), withName: key)
                 }
                 //files
-                switch files.0 {
+                switch files.fileType {
                 case UploadFileType.imageFile.rawValue:
-                    for(key, value) in files.1 {
+                    for(key, value) in files.fileNamesAndFilesDict {
                         let file = value as? UIImage
                         let fileData = file?.pngData()
                         multipartFormData.append(fileData ?? Data(),
@@ -253,6 +276,7 @@ class NetworkHandler {
             switch statusCode {
             case 200...299:
                 onAPISuccess(dictFromJSON)
+                return
             default:
                 NetworkHandler.handleErrorFromResponse(forRequest: requestUrl,
                                                        response: dictFromJSON,
@@ -260,14 +284,20 @@ class NetworkHandler {
                                                        failureCallBack: { errorMessage in
                                                         print(errorMessage)
                                                         onAPIFailure(errorMessage, .httpError)
+                    return
                 })
             }
         } else if statusCode == 204 {
             // Usually on a successful api hit, if an email/sms got triggered and there is no data to be returned, the data will be returned empty.
             if responseJsonData.isEmpty {
                 onAPISuccess([:])
+                return
             }
+        } else if statusCode >= 500 && statusCode <= 599 {
+            onAPIFailure("Server is busy right now, please try again in a while", .unknownError)
+            return
         }
+        onAPIFailure("Unknown error occurred, please try again later", .unknownError)
     }
 
     // MARK: - Response Error Handling
@@ -291,10 +321,16 @@ class NetworkHandler {
         // Token expiry is handled in IF case. authentication failure is handled in common error handling
         if statusCode == 401 && ( hasAuthToken || !isLoginApiCall) {
             UserManager.shared.refreshToken { success in
-                if success {
-                    onFailure("Session restored. Please retry.")
-                } else {
-                    onFailure("Session expired. Failed to restore session automatically.")
+                DispatchQueue.main.async {
+                    if success {
+                        //token is refreshed and session restored. now manually retry what you were doing.
+                        onFailure("Session restored. Please retry.")
+                    } else {
+                        //logoout/clear user data and take to login screen
+                        UserManager.shared.clearData()
+                        Router.setRootViewController()
+                        onFailure("Session expired. Failed to restore session automatically.")
+                    }
                 }
             }
         } else {
@@ -321,41 +357,35 @@ class NetworkHandler {
                             onFailure(messagesArray?[0] ?? fallbackErrorMessage)
                             return
                         } else if messages is [String: Any] {
-                            /* ["errors": {
-                                    messages =   {
-                                          age: "xyz must be a valid integer value",
-                                          gender: "abc must be a valid enum value"
-                                    }
-                                  }]  */
                             let errorMessagesDict = messages as? [String: Any] ?? [:]
-                            for key in errorMessagesDict.keys where errorMessagesDict[key] is String {
-                                let errMsg = errorMessagesDict[key] as? String ?? fallbackErrorMessage
-                                onFailure(errMsg)
-                                return
-                            }
-                        } else if messages is [[String: Any]] {
-                            /* {
-                                "errors": {
-                                    "messages": [
-                                        {
-                                            "property": "communicationMode",
-                                            "value": 4,
-                                            "constraints": {
-                                                "isEnum": "communicationMode must be a valid enum value"
-                                            }
+                             for key in errorMessagesDict.keys {
+                                /* ["errors": {
+                                        messages =   {
+                                              age: "xyz must be a valid integer value",
+                                              gender: "abc must be a valid enum value"
                                         }
-                                    ]
+                                      }]  */
+                                if errorMessagesDict[key] is String {
+                                    let errMsg = errorMessagesDict[key] as? String ?? fallbackErrorMessage
+                                    onFailure(errMsg)
+                                    return
                                 }
-                             } */
-                            let messagesArray = messages as? [[String: Any]]
-                            let errorMessagesDict = messagesArray?[0] ?? [:]
-                            let errorConstraints = errorMessagesDict[Constants.ResponseKey.constraints] as? [String: Any] ?? [:]
-                            for key in errorConstraints.keys where errorConstraints[key] is String {
-                                let errMsg = errorConstraints[key] as? String ?? fallbackErrorMessage
-                                onFailure(errMsg)
-                                return
-                            }
-                        }
+                                /* {
+                                      "errors": {
+                                          "messages": {
+                                              "id": [
+                                                  "id should not be null or undefined"
+                                              ]
+                                          }
+                                      }
+                                  } */
+                                else if errorMessagesDict[key] is [String] {
+                                    let errMsg = errorMessagesDict[key] as? [String]
+                                    onFailure(errMsg?[0] ?? fallbackErrorMessage)
+                                    return
+                                }
+                             }
+                         }
                     } else if errors is String {
                         /* ["errors": "xyz must be a valid integer value"]  */
                         let errorMessage = errors as? String

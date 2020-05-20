@@ -9,7 +9,6 @@
 import UIKit
 
 class MyProfileViewController: BaseViewController {
-
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var emailLbl: UILabel!
     @IBOutlet weak var logoutBtn: BorderedButton!

@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 class AppConfig: NSObject {
-    /** Gets the active Base URL to be used across app for backend API calls */
-    static func getActiveBaseURL() -> String {
-        return AppConfig.BaseUrl.DEV
-    }
+    /// Currently active BASE URL for the backend  API calls
+    static let activeBaseURL = AppConfig.BaseUrl.PRODUCTION
+    /// the current backend API version number
+    static let currentApiVersion = "v1"
 
     /** List of Base URLs for development, QA, UAT, and Production environment. */
     struct BaseUrl {

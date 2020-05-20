@@ -9,7 +9,6 @@
 import UIKit
 
 class SignupViewController: BaseViewController {
-
     @IBOutlet weak var firstNameTxtField: UITextField!
     @IBOutlet weak var lastNameTxtField: UITextField!
     @IBOutlet weak var emailTxtField: UITextField!
