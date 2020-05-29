@@ -8,18 +8,16 @@
 import UIKit
 
 extension UIFont {
-    static let screenWidthRatio = UIScreen.main.bounds.size.width / 320.0
 
     /// scales the font for different devices
     func adaptiveResize() -> UIFont {
-        let scaledFontSize = self.pointSize * UIFont.screenWidthRatio
-        let sizeDifference = scaledFontSize - self.pointSize
-        if sizeDifference > 0 {
-            let pointsToScale = sizeDifference * 0.5
-            let finalPointSize = self.pointSize + pointsToScale
-            return self.withSize(finalPointSize)
+        let scaleFactor = (UIScreen.main.scale == 3.0) ? 1.2 : (UIScreen.main.scale == 2.0) ? 1.1 : 1.0
+        let size = self.pointSize * CGFloat(scaleFactor)
+        if #available(iOS 11.0, *) {
+            return UIFontMetrics.default.scaledFont(for: self.withSize(size))
+        } else {
+            return self.withSize(size)
         }
-        return self
     }
 
     // MARK: - Open Sans
