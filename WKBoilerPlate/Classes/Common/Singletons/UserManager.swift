@@ -25,7 +25,7 @@ class UserManager {
     func clearData() {
         self.user = nil
         self.clearUserDefaults()
-        CoreDataMembersViewModel.resetAllRecords(in: Constants.Entities.members)
+        CoreDataMembersViewModel.resetAllRecords(in: Entities.members)
         RealmMembersViewModel.resetAllRecords()
     }
 
@@ -34,14 +34,14 @@ class UserManager {
      - can be used during logout or deleting user account
      */
     func clearUserDefaults() {
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.authToken)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userId)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userEmail)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userLastName)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userFirstName)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.authToken)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userRefreshToken)
-        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userTmpPassword)
+        UserDefaults.standard.removeObject(forKey: Defaults.authToken)
+        UserDefaults.standard.removeObject(forKey: Defaults.userId)
+        UserDefaults.standard.removeObject(forKey: Defaults.userEmail)
+        UserDefaults.standard.removeObject(forKey: Defaults.userLastName)
+        UserDefaults.standard.removeObject(forKey: Defaults.userFirstName)
+        UserDefaults.standard.removeObject(forKey: Defaults.authToken)
+        UserDefaults.standard.removeObject(forKey: Defaults.userRefreshToken)
+        UserDefaults.standard.removeObject(forKey: Defaults.userTmpPassword)
     }
 
     /**
@@ -50,8 +50,8 @@ class UserManager {
      - request params: refreshToken
      */
     func refreshToken(refreshStatus status: @escaping OnTaskSuccess) {
-        let endpoint = "\(Constants.EndPoint.authentication)\(Constants.EndPoint.refreshToken)"
-        let userRefreshToken = UserDefaults.standard.object(forKey: Constants.Defaults.userRefreshToken)
+        let endpoint = "\(EndPoint.authentication)\(EndPoint.refreshToken)"
+        let userRefreshToken = UserDefaults.standard.object(forKey: Defaults.userRefreshToken)
         NetworkHandler.apiRequest(endPoint: endpoint,
                                   paramDict: ["refreshToken": userRefreshToken ?? ""],
                                   method: .post,
@@ -65,11 +65,11 @@ class UserManager {
                 // save to user defaults
                 let dataDict = responseDict["data"] as? [String: Any]
                 let userDict = dataDict?["user"] as? [String: Any]
-                UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
+                UserDefaults.standard.set(userDict?["accessToken"], forKey: Defaults.authToken)
+                UserDefaults.standard.set(userDict?["email"], forKey: Defaults.userEmail)
+                UserDefaults.standard.set(userDict?["firstName"], forKey: Defaults.userFirstName)
+                UserDefaults.standard.set(userDict?["lastName"], forKey: Defaults.userLastName)
+                UserDefaults.standard.set(userDict?["refreshToken"], forKey: Defaults.userRefreshToken)
                 status(true)
         }, onFailure: { (errorMsg, errorType) in
             print(errorMsg)

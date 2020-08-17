@@ -43,19 +43,19 @@ class SignupViewModel {
             onFailure("Please enter the password")
             return
         }
-        if firstName.count > Constants.Maximum.firstNameLength {
+        if firstName.count > Maximum.firstNameLength {
             onFailure("First name exceeded its maximum limit of length")
             return
         }
-        if lastName.count > Constants.Maximum.lastNameLength {
+        if lastName.count > Maximum.lastNameLength {
             onFailure("Last name exceeded its maximum limit of length")
             return
         }
-        if email.count > Constants.Maximum.emailLength {
+        if email.count > Maximum.emailLength {
             onFailure("Email exceeded its maximum limit of length")
             return
         }
-        if password.count > Constants.Maximum.passwordLength {
+        if password.count > Maximum.passwordLength {
             onFailure("Password exceeded its maximum limit of length")
             return
         }
@@ -92,14 +92,14 @@ class SignupViewModel {
             let encodedData = try? JSONEncoder().encode(self.user.value)
             let requestParams = try? JSONSerialization.jsonObject(with: encodedData ?? Data(), options: .allowFragments)
             print(requestParams as Any)
-            NetworkHandler.apiRequest(endPoint: Constants.EndPoint.users,
+            NetworkHandler.apiRequest(endPoint: EndPoint.users,
                                       paramData: encodedData,
                                       method: .post,
                                       onSuccess: { (responseDict) in
                 print(responseDict)
                 let respData = responseDict["data"] as? [String: Any]
                 let userInfo = respData?["user"] as? [String: Any]
-                UserDefaults.standard.set(userInfo?["_id"], forKey: Constants.Defaults.userId)
+                UserDefaults.standard.set(userInfo?["_id"], forKey: Defaults.userId)
                 success("Success")
             }, onFailure: { errorMsg, _ in
                 print(errorMsg)

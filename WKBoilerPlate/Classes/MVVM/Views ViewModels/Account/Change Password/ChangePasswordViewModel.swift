@@ -66,7 +66,7 @@ class ChangePasswordViewModel {
                        onValidationFailure validation: @escaping OnFailure,
                        onSessionExpiry sessionExpired: @escaping OnFailure) {
         validateForm(success: { _ in
-            NetworkHandler.apiRequest(endPoint: Constants.EndPoint.users,
+            NetworkHandler.apiRequest(endPoint: EndPoint.users,
                                       paramDict: ["password": self.newPwd.value.sha512()],
                                       method: .patch,
                                       onSuccess: { responseDict in
@@ -79,11 +79,11 @@ class ChangePasswordViewModel {
                      UserManager.shared.user = decodedData
                      // save to userdefaults
                      let userDict = dataDict["user"] as? [String: Any]
-                     UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                     UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                     UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                     UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                     UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
+                     UserDefaults.standard.set(userDict?["accessToken"], forKey: Defaults.authToken)
+                     UserDefaults.standard.set(userDict?["email"], forKey: Defaults.userEmail)
+                     UserDefaults.standard.set(userDict?["firstName"], forKey: Defaults.userFirstName)
+                     UserDefaults.standard.set(userDict?["lastName"], forKey: Defaults.userLastName)
+                     UserDefaults.standard.set(userDict?["refreshToken"], forKey: Defaults.userRefreshToken)
                  }
                  success("Success")
             }, onFailure: { errorMsg, _ in

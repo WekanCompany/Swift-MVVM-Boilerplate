@@ -62,17 +62,17 @@ extension ChangePasswordViewController: UITextFieldDelegate {
                                                           with: string)
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
             if textField == pwdTxtField {
-                if newString.count > Constants.Maximum.passwordLength {
+                if newString.count > Maximum.passwordLength {
                     return false
                 }
                 viewModel.oldPwd.value = newString
             } else if textField == newPwdTxtField {
-                if newString.count > Constants.Maximum.passwordLength {
+                if newString.count > Maximum.passwordLength {
                     return false
                 }
                 viewModel.newPwd.value = newString
             } else if textField == confirmPwdTxtField {
-                if newString.count > Constants.Maximum.passwordLength {
+                if newString.count > Maximum.passwordLength {
                     return false
                 }
                 viewModel.confirmNewPwd.value = newString

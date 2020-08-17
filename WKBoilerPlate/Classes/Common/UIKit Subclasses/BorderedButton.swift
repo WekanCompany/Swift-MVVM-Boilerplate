@@ -25,26 +25,14 @@ class BorderedButton: UIButton {
      Sets the common bold font of the app in requested size
      */
     func setBoldFontOfSize(size: CGFloat) {
-        let customFont = UIFont.openSansBoldFont(withSize: size).adaptiveResize()
-        if #available(iOS 11.0, *) {
-            self.titleLabel?.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: customFont)
-        } else {
-            // Fallback on earlier versions
-            self.titleLabel?.font = customFont.adaptiveResize()
-        }
+        self.titleLabel?.font = UIFont.openSansBoldFont(withSize: size)
         self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
     /**
      Sets the common light font of the app in requested size
      */
     func setLightFontOfSize(size: CGFloat) {
-        let customFont = UIFont.openSansRegularFont(withSize: size).adaptiveResize()
-        if #available(iOS 11.0, *) {
-            self.titleLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: customFont)
-        } else {
-            // Fallback on earlier versions
-            self.titleLabel?.font = customFont.adaptiveResize()
-        }
+        self.titleLabel?.font = UIFont.openSansRegularFont(withSize: size)
         self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 }

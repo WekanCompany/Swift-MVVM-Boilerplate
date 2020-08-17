@@ -55,7 +55,7 @@ class NetworkHandler {
      - returns: authorization token as String
      */
     static func getBasicAuthentication() -> String? {
-        guard let sessionToken = UserDefaults.standard.object(forKey: Constants.Defaults.authToken) as? String else {
+        guard let sessionToken = UserDefaults.standard.object(forKey: Defaults.authToken) as? String else {
             return ""
         }
         print("AuthToken: \(sessionToken)")
@@ -314,7 +314,7 @@ class NetworkHandler {
                                         statusCode: Int,
                                         failureCallBack onFailure: @escaping OnFailure) {
         let hasAuthToken: Bool = !NetworkHandler.getBasicAuthentication()!.isEmpty
-        let isLoginApiCall: Bool = requestUrl.hasSuffix(Constants.EndPoint.login)
+        let isLoginApiCall: Bool = requestUrl.hasSuffix(EndPoint.login)
         
         //Handle Auth Token expiry
         // 401 could happen for authentication failure or token expiry.
@@ -334,13 +334,13 @@ class NetworkHandler {
                 }
             }
         } else {
-            guard let msg = jsonDict[Constants.ResponseKey.messages] as? String else {
+            guard let msg = jsonDict[ResponseKey.messages] as? String else {
                 let fallbackErrorMessage = "Something went wrong, please retry."
-                let errors = jsonDict[Constants.ResponseKey.errors]
+                let errors = jsonDict[ResponseKey.errors]
                 if errors != nil {
                     if errors is [String: Any] {
                         let errorDict = errors as? [String: Any]
-                        let messages = errorDict?[Constants.ResponseKey.messages]
+                        let messages = errorDict?[ResponseKey.messages]
                         if messages is String {
                             /* ["errors": {
                                    messages = "xyz must be a valid integer value"

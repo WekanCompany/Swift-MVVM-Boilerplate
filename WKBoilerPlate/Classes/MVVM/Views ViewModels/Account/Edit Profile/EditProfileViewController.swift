@@ -25,9 +25,9 @@ class EditProfileViewController: BaseViewController {
     }
 
     func loadUserData() {
-        firstNameTxtField.text = "\(UserDefaults.standard.object(forKey: Constants.Defaults.userFirstName) ?? "")"
-        lastNameTxtField.text = "\(UserDefaults.standard.object(forKey: Constants.Defaults.userLastName) ?? "")"
-        emailTxtField.text = "\(UserDefaults.standard.object(forKey: Constants.Defaults.userEmail) ?? "")"
+        firstNameTxtField.text = "\(UserDefaults.standard.object(forKey: Defaults.userFirstName) ?? "")"
+        lastNameTxtField.text = "\(UserDefaults.standard.object(forKey: Defaults.userLastName) ?? "")"
+        emailTxtField.text = "\(UserDefaults.standard.object(forKey: Defaults.userEmail) ?? "")"
   }
 
     /// Tap action for change paswword button
@@ -71,12 +71,12 @@ extension EditProfileViewController: UITextFieldDelegate {
                                                           with: string)
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
             if textField == firstNameTxtField {
-                if newString.count > Constants.Maximum.firstNameLength {
+                if newString.count > Maximum.firstNameLength {
                     return false
                 }
                 viewModel.user.value.firstName = newString
             } else if textField == lastNameTxtField {
-                if newString.count > Constants.Maximum.lastNameLength {
+                if newString.count > Maximum.lastNameLength {
                     return false
                 }
                 viewModel.user.value.lastName = newString

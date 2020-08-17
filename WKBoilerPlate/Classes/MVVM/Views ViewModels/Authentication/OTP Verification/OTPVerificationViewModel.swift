@@ -36,8 +36,8 @@ class OTPVerificationViewModel {
         validateForm(success: { _ in
             let requestParams = ["verificationCode": self.otp.value]
             print(requestParams)
-            let userID = UserDefaults.standard.object(forKey: Constants.Defaults.userId)
-            let endpoint = "\(Constants.EndPoint.authentication)/\(userID!)\(Constants.EndPoint.verifyAccount)"
+            let userID = UserDefaults.standard.object(forKey: Defaults.userId)
+            let endpoint = "\(EndPoint.authentication)/\(userID!)\(EndPoint.verifyAccount)"
             NetworkHandler.apiRequest(endPoint: endpoint,
                                       paramDict: requestParams,
                                       method: .post,
@@ -46,12 +46,12 @@ class OTPVerificationViewModel {
                 // Save user info locally
                 let dataDict = responseDict["data"] as? [String: Any]
                 let userDict = dataDict?["user"] as? [String: Any]
-                UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
-                UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Constants.Defaults.userTmpPassword)
+                UserDefaults.standard.set(userDict?["accessToken"], forKey: Defaults.authToken)
+                UserDefaults.standard.set(userDict?["email"], forKey: Defaults.userEmail)
+                UserDefaults.standard.set(userDict?["firstName"], forKey: Defaults.userFirstName)
+                UserDefaults.standard.set(userDict?["lastName"], forKey: Defaults.userLastName)
+                UserDefaults.standard.set(userDict?["refreshToken"], forKey: Defaults.userRefreshToken)
+                UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Defaults.userTmpPassword)
 
                 success("Success")
             }, onFailure: { errorMsg, _ in
@@ -69,8 +69,8 @@ class OTPVerificationViewModel {
     func resendOTP(onSuccess success: @escaping OnSuccess,
                    onFailure failure: @escaping OnFailure,
                    onValidationFailure validation: @escaping OnFailure) {
-        let userId = UserDefaults.standard.object(forKey: Constants.Defaults.userId)
-        let endpoint = "\(Constants.EndPoint.authentication)/\(userId!)\(Constants.EndPoint.verificationCode)"
+        let userId = UserDefaults.standard.object(forKey: Defaults.userId)
+        let endpoint = "\(EndPoint.authentication)/\(userId!)\(EndPoint.verificationCode)"
         NetworkHandler.apiRequest(endPoint: endpoint, paramDict: [:], method: .post, onSuccess: { responseDict in
             print(responseDict)
             success("Success")

@@ -90,12 +90,12 @@ extension LoginViewController: UITextFieldDelegate {
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
 
             if textField == emailTxtField {
-                if newString.count > Constants.Maximum.emailLength {
+                if newString.count > Maximum.emailLength {
                     return false
                 }
                 viewModel.loginModel.value.email = newString
             } else if textField == pwdTxtField {
-                if newString.count > Constants.Maximum.passwordLength {
+                if newString.count > Maximum.passwordLength {
                     return false
                 }
                 viewModel.loginModel.value.password = newString

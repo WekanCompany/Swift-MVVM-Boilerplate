@@ -39,15 +39,15 @@ class AddMemberViewModel {
             onFailure("Please enter the email")
             return
         }
-        if firstName.count > Constants.Maximum.firstNameLength {
+        if firstName.count > Maximum.firstNameLength {
             onFailure("First name exceeded its maximum limit of length")
             return
         }
-        if lastName.count > Constants.Maximum.lastNameLength {
+        if lastName.count > Maximum.lastNameLength {
             onFailure("Last name exceeded its maximum limit of length")
             return
         }
-        if email.count > Constants.Maximum.emailLength {
+        if email.count > Maximum.emailLength {
             onFailure("Email exceeded its maximum limit of length")
             return
         }
@@ -85,13 +85,13 @@ class AddMemberViewModel {
                 print(requestParams as Any)
                 if let dictFromJSON = requestParams as? [String: Any] {
                     NetworkHandler.apiRequest(
-                        endPoint: Constants.EndPoint.users,
+                        endPoint: EndPoint.users,
                         paramDict: dictFromJSON,
                         method: .post,
                         onSuccess: { responseDict in
                             let respData = responseDict["data"] as? [String: Any]
                             let userInfo = respData?["user"] as? [String: Any]
-                            UserDefaults.standard.set(userInfo?["_id"], forKey: Constants.Defaults.userId)
+                            UserDefaults.standard.set(userInfo?["_id"], forKey: Defaults.userId)
                             success("Success")
                         }, onFailure: { errorMsg, errorType in
                             print(errorMsg)

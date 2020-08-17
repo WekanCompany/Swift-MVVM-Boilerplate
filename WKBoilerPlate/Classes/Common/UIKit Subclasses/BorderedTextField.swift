@@ -39,13 +39,7 @@ class BorderedTextField: UITextField {
      Sets the common bold font of the app in requested size
      */
     func setBoldFont(ofSize size: CGFloat) {
-        let customFont = UIFont.openSansBoldFont(withSize: size).adaptiveResize()
-        if #available(iOS 11.0, *) {
-            self.font = UIFontMetrics(forTextStyle: .headline).scaledFont(for: customFont)
-        } else {
-            // Fallback on earlier versions
-            self.font = customFont.adaptiveResize()
-        }
+        self.font = UIFont.openSansBoldFont(withSize: size)
         self.adjustsFontForContentSizeCategory = true
     }
 
@@ -53,13 +47,7 @@ class BorderedTextField: UITextField {
      Sets the common light font of the app in requested size
      */
     func setLightFont(ofSize size: CGFloat) {
-        let customFont = UIFont.openSansRegularFont(withSize: size).adaptiveResize()
-        if #available(iOS 11.0, *) {
-            self.font = UIFontMetrics(forTextStyle: .headline).scaledFont(for: customFont)
-        } else {
-            // Fallback on earlier versions
-            self.font = customFont.adaptiveResize()
-        }
+        self.font = UIFont.openSansRegularFont(withSize: size)
         self.adjustsFontForContentSizeCategory = true
     }
 }

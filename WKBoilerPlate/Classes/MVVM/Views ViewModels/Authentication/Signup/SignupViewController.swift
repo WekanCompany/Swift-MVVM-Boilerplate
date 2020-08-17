@@ -66,22 +66,22 @@ extension SignupViewController: UITextFieldDelegate {
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
             switch textField {
             case firstNameTxtField:
-                if newString.count > Constants.Maximum.firstNameLength {
+                if newString.count > Maximum.firstNameLength {
                     return false
                 }
                 viewModel.user.value.firstName = newString
             case lastNameTxtField:
-                if newString.count > Constants.Maximum.lastNameLength {
+                if newString.count > Maximum.lastNameLength {
                     return false
                 }
                 viewModel.user.value.lastName = newString
             case emailTxtField:
-                if newString.count > Constants.Maximum.emailLength {
+                if newString.count > Maximum.emailLength {
                     return false
                 }
                 viewModel.user.value.email = newString
             case pwdTxtField:
-                if newString.count > Constants.Maximum.passwordLength {
+                if newString.count > Maximum.passwordLength {
                     return false
                 }
                 viewModel.user.value.password = newString

@@ -23,7 +23,7 @@ class CoreDataMembersViewModel {
     init() {
         self.users = []
         self.usersDBObjects = []
-        self.managedContext = Constants.appDelegate.persistentContainer.viewContext
+        self.managedContext = appDelegate.persistentContainer.viewContext
     }
 
     // MARK: - API calls
@@ -39,7 +39,7 @@ class CoreDataMembersViewModel {
      - Parameter failure: callback for API failure
      */
     func getAllUsers(onSuccess success: @escaping OnSuccess, onFailure failure: @escaping OnFailure) {
-        var endPoint = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc&offset=0&limit=10"
+        var endPoint = "\(EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc&offset=0&limit=10"
         endPoint = endPoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? endPoint
         NetworkHandler.apiRequest(endPoint: endPoint, paramDict: [:], method: .get, onSuccess: { responseDict in
             // Parse users data
@@ -88,7 +88,7 @@ class CoreDataMembersViewModel {
      - Parameter taskFailure: callback if there is any errors in inserting users to db
      */
     func createUsersInLocalDB(members: [User], onSuccess taskSuccess: OnTaskSuccess, onFailure taskFailure: @escaping OnFailure) {
-        let usersEntity = NSEntityDescription.entity(forEntityName: Constants.Entities.members, in: managedContext)!
+        let usersEntity = NSEntityDescription.entity(forEntityName: Entities.members, in: managedContext)!
         // iterate the users received from API and add them to DB
         for index in 0..<members.count {
             //Check if user already exists
@@ -121,7 +121,7 @@ class CoreDataMembersViewModel {
      - Parameter userId: userId of the user to be checked in database
      */
     func isExist(userId: String) -> Bool {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.Entities.members)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entities.members)
         fetchRequest.predicate = NSPredicate(format: "userId = %@", argumentArray: [userId])
         let res = try? managedContext.fetch(fetchRequest)
         return res?.count ?? 0 > 0 ? true : false
@@ -132,7 +132,7 @@ class CoreDataMembersViewModel {
      - Used in members list screen, where it shows all users from coredata
      */
     func getAllUsersFromDB() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.Entities.members)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entities.members)
         do {
             let results = try managedContext.fetch(fetchRequest) as? [Member]
             self.usersDBObjects = results ?? []
@@ -147,7 +147,7 @@ class CoreDataMembersViewModel {
      - This is a sample update call to update the record of a user
      */
     func updateData() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: Constants.Entities.members)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: Entities.members)
         fetchRequest.predicate = NSPredicate(format: "%@ = %@", attributeFirstName, "Ajith1")
         do {
             let test = try managedContext.fetch(fetchRequest)
@@ -173,7 +173,7 @@ class CoreDataMembersViewModel {
      - This is a sample delete call to delete a user record
      */
     func deleteData() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.Entities.members)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entities.members)
         fetchRequest.predicate = NSPredicate(format: "%@ = %@", attributeFirstName, "Ajith3")
         do {
             let test = try managedContext.fetch(fetchRequest)
@@ -194,7 +194,7 @@ class CoreDataMembersViewModel {
     /// Deletes all records and clears the table/entity
     /// - Parameter entity: name of the entity to be reset
     static func resetAllRecords(in entity: String) {
-        let context = Constants.appDelegate.persistentContainer.viewContext
+        let context = appDelegate.persistentContainer.viewContext
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
         do {
@@ -210,7 +210,7 @@ class CoreDataMembersViewModel {
     /// This will sync the users who were added offline.
     /// It will check for the users with offline flag as TRUE and make API calls to create those users.
     func syncOfflineMembers() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.Entities.members)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entities.members)
         fetchRequest.predicate = NSPredicate(format: "%@ = 1", attributeOffline)
         do {
             guard let offlineMembers = try managedContext.fetch(fetchRequest) as? [Member] else {

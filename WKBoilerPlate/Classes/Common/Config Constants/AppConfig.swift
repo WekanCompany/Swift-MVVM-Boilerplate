@@ -40,7 +40,7 @@ class AppConfig: NSObject {
     /** Gets the selected Language to be used across app
      - Used for localizations */
     static var selectedLanguage: String {
-        let selectedLang = UserDefaults.standard.object(forKey: Constants.Defaults.selectedLanguage)
+        let selectedLang = UserDefaults.standard.object(forKey: Defaults.selectedLanguage)
         var lang: String = selectedLang as? String ?? "en"
         if lang.contains("-") {
             let language: String = lang.components(separatedBy: "-").first ?? "en"

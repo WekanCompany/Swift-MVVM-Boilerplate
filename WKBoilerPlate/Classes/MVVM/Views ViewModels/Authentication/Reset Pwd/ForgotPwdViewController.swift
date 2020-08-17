@@ -45,7 +45,7 @@ extension ForgotPwdViewController: UITextFieldDelegate {
             var newString = oldString.replacingCharacters(in: Range(range, in: oldString)!,
                                                           with: string)
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
-            if newString.count > Constants.Maximum.emailLength {
+            if newString.count > Maximum.emailLength {
                 return false
             }
             viewModel.email.value = newString

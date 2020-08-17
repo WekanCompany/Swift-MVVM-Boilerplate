@@ -44,7 +44,7 @@ class ForgotPwdViewModel {
         validateForm(success: { _ in
             let requestParams = ["email": self.email.value]
             print(requestParams)
-            let endpoint = "\(Constants.EndPoint.authentication)\(Constants.EndPoint.resetPwd)"
+            let endpoint = "\(EndPoint.authentication)\(EndPoint.resetPwd)"
             NetworkHandler.apiRequest(endPoint: endpoint,
                                       paramDict: requestParams,
                                       method: .post,

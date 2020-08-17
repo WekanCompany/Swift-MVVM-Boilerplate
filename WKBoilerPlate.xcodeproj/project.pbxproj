@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0821071524066BCC009C25A8 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0821071324066BCC009C25A8 /* AppConfig.swift */; };
-		0821071624066BCC009C25A8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0821071424066BCC009C25A8 /* Constants.swift */; };
+		08614A7824DABBC3006946DF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08614A7624DABBC3006946DF /* Constants.swift */; };
+		08614A7924DABBC3006946DF /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08614A7724DABBC3006946DF /* AppConfig.swift */; };
 		08DDA5B424091E8400F6858B /* ForgotPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDA5B324091E8400F6858B /* ForgotPwdViewController.swift */; };
 		08DDA5B624091E9C00F6858B /* ForgotPwdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDA5B524091E9C00F6858B /* ForgotPwdViewModel.swift */; };
 		20C0952D7816BC5A076DE5A1 /* Pods_WKBoilerPlate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0337E78080A86A0EA356201E /* Pods_WKBoilerPlate.framework */; };
@@ -87,8 +87,8 @@
 		021D1F30FF7DC3718B9E9374 /* Pods-WKBoilerPlateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlateTests.release.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlateTests/Pods-WKBoilerPlateTests.release.xcconfig"; sourceTree = "<group>"; };
 		023D4DDDA98205DE575C7E5E /* Pods-WKBoilerPlateTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlateTests.debug.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlateTests/Pods-WKBoilerPlateTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0337E78080A86A0EA356201E /* Pods_WKBoilerPlate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WKBoilerPlate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0821071324066BCC009C25A8 /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppConfig.swift; path = WKBoilerPlate/Classes/Common/Config/AppConfig.swift; sourceTree = SOURCE_ROOT; };
-		0821071424066BCC009C25A8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = WKBoilerPlate/Classes/Common/Config/Constants.swift; sourceTree = SOURCE_ROOT; };
+		08614A7624DABBC3006946DF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		08614A7724DABBC3006946DF /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		08DDA5B324091E8400F6858B /* ForgotPwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewController.swift; sourceTree = "<group>"; };
 		08DDA5B524091E9C00F6858B /* ForgotPwdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewModel.swift; sourceTree = "<group>"; };
 		21DEE41B7DD39FCB562AD11F /* Pods-WKBoilerPlate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WKBoilerPlate.release.xcconfig"; path = "Target Support Files/Pods-WKBoilerPlate/Pods-WKBoilerPlate.release.xcconfig"; sourceTree = "<group>"; };
@@ -184,6 +184,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08614A7524DABBC3006946DF /* Config Constants */ = {
+			isa = PBXGroup;
+			children = (
+				08614A7724DABBC3006946DF /* AppConfig.swift */,
+				08614A7624DABBC3006946DF /* Constants.swift */,
+			);
+			path = "Config Constants";
+			sourceTree = "<group>";
+		};
 		08DDA5B224091E4300F6858B /* Reset Pwd */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,22 +287,13 @@
 		F50781D3232F0CDA00EAA740 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				F50781D4232F0CDA00EAA740 /* Config */,
+				08614A7524DABBC3006946DF /* Config Constants */,
 				F50781E1232F0CDA00EAA740 /* Services */,
 				F50781D7232F0CDA00EAA740 /* Singletons */,
 				F50781D9232F0CDA00EAA740 /* Extensions */,
 				F50781DD232F0CDA00EAA740 /* UIKit Subclasses */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		F50781D4232F0CDA00EAA740 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				0821071324066BCC009C25A8 /* AppConfig.swift */,
-				0821071424066BCC009C25A8 /* Constants.swift */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		F50781D7232F0CDA00EAA740 /* Singletons */ = {
@@ -755,14 +755,13 @@
 				F5E86FA32396471B00004979 /* AddMemberViewModel.swift in Sources */,
 				F55B2F9D23301C0100B20206 /* LoginViewController.swift in Sources */,
 				F55B2F9723301C0100B20206 /* EditProfileViewModel.swift in Sources */,
-				0821071524066BCC009C25A8 /* AppConfig.swift in Sources */,
+				08614A7924DABBC3006946DF /* AppConfig.swift in Sources */,
 				F50781FB232F0CDA00EAA740 /* ColorExtension.swift in Sources */,
 				F59B6A2B23327D50000A74E0 /* TextViewExtension.swift in Sources */,
 				F50781FC232F0CDA00EAA740 /* StringExtension.swift in Sources */,
 				F50781FE232F0CDA00EAA740 /* BorderedButton.swift in Sources */,
 				F55B2F9023301C0100B20206 /* User.swift in Sources */,
 				F59B6A2D23327D7A000A74E0 /* TextFieldExtension.swift in Sources */,
-				0821071624066BCC009C25A8 /* Constants.swift in Sources */,
 				F5078202232F0CDA00EAA740 /* Helper.swift in Sources */,
 				F51FC1912330A7FB001CA910 /* RealmMembersViewController.swift in Sources */,
 				F55B2F9B23301C0100B20206 /* OTPVerificationViewModel.swift in Sources */,
@@ -778,6 +777,7 @@
 				08DDA5B624091E9C00F6858B /* ForgotPwdViewModel.swift in Sources */,
 				08DDA5B424091E8400F6858B /* ForgotPwdViewController.swift in Sources */,
 				F55B2F9523301C0100B20206 /* MyProfileViewController.swift in Sources */,
+				08614A7824DABBC3006946DF /* Constants.swift in Sources */,
 				F5078200232F0CDA00EAA740 /* Router.swift in Sources */,
 				F5078201232F0CDA00EAA740 /* NetworkHandler.swift in Sources */,
 				F55B2F9223301C0100B20206 /* ChangePasswordViewController.swift in Sources */,

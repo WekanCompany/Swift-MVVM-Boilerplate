@@ -64,7 +64,7 @@ class MembersCoreDataTests: XCTestCase {
         ]
 
         let testHost = AppConfig.BaseUrl.TESTHOST
-        var testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
+        var testPath = "\(EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         testPath = testPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? testPath
         let expectation = self.expectation(description: "success")
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
@@ -89,7 +89,7 @@ class MembersCoreDataTests: XCTestCase {
     /// Test API response handling for empty list or empty array
     func testGetAllUsersEmptyHandling() {
         let testHost = AppConfig.BaseUrl.TESTHOST
-        var testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
+        var testPath = "\(EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         testPath = testPath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? testPath
         let stubbedJSON = ["data": ["users": []]]
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
@@ -110,7 +110,7 @@ class MembersCoreDataTests: XCTestCase {
     // Test API failure handling for no network
     func testGetAllUsersFailureHandling() {
         let testHost = AppConfig.BaseUrl.TESTHOST
-        let testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
+        let testPath = "\(EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
             return HTTPStubsResponse(error: notConnectedError)
@@ -132,7 +132,7 @@ class MembersCoreDataTests: XCTestCase {
     /// Test the slow network handling for Get all users API call
     func testLowNetworkHandlingForGetAllUsersAPI() {
         let testHost = AppConfig.BaseUrl.TESTHOST
-        let testPath = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
+        let testPath = "\(EndPoint.users)?fields=email,firstName,lastName&sort=firstName|asc"
         let notConnectedError = NSError(domain: NSURLErrorDomain, code: URLError.notConnectedToInternet.rawValue)
         stub(condition: isHost(testHost) && isPath(testPath)) { _ in
             return HTTPStubsResponse(data: Data(), statusCode: 400, headers: nil).responseTime(OHHTTPStubsDownloadSpeed3G)

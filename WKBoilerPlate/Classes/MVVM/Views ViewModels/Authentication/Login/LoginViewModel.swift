@@ -52,7 +52,7 @@ class LoginViewModel {
             let encodedData = try? JSONEncoder().encode(self.loginModel.value)
             let requestParams = try? JSONSerialization.jsonObject(with: encodedData ?? Data(), options: .allowFragments)
             print(requestParams as Any)
-            let endPoint = Constants.EndPoint.authentication + Constants.EndPoint.login
+            let endPoint = EndPoint.authentication + EndPoint.login
             NetworkHandler.apiRequest(endPoint: endPoint,
                                       paramData: encodedData,
                                       method: .post,
@@ -67,12 +67,12 @@ class LoginViewModel {
                     //save to userdefaults
                     let dataDict = responseDict["data"] as? [String: Any]
                     let userDict = dataDict?["user"] as? [String: Any]
-                    UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                    UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                    UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                    UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                    UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
-                    UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Constants.Defaults.userTmpPassword)
+                    UserDefaults.standard.set(userDict?["accessToken"], forKey: Defaults.authToken)
+                    UserDefaults.standard.set(userDict?["email"], forKey: Defaults.userEmail)
+                    UserDefaults.standard.set(userDict?["firstName"], forKey: Defaults.userFirstName)
+                    UserDefaults.standard.set(userDict?["lastName"], forKey: Defaults.userLastName)
+                    UserDefaults.standard.set(userDict?["refreshToken"], forKey: Defaults.userRefreshToken)
+                    UserDefaults.standard.set(userDict?["tmpPassword"], forKey: Defaults.userTmpPassword)
                     let tempPwdForReset = userDict?["tmpPassword"] as? String ?? ""
                     success(tempPwdForReset.isEmpty ? "Success" : "SetPassword")
             }, onFailure: { (errorMsg, errorType) in

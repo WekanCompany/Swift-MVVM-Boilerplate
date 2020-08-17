@@ -57,7 +57,7 @@ extension OTPVerificationViewController: UITextFieldDelegate {
                                                           with: string)
             newString = newString.trimmingCharacters(in: .whitespacesAndNewlines)
             if textField == otpTextFld {
-                if newString.count > Constants.Maximum.otpLength {
+                if newString.count > Maximum.otpLength {
                     return false
                 }
                 viewModel.otp.value = newString

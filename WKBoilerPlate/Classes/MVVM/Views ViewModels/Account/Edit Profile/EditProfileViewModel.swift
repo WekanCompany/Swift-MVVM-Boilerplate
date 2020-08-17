@@ -49,7 +49,7 @@ class EditProfileViewModel {
             let encodedData = try? JSONEncoder().encode(self.user.value)
             let requestParams = try? JSONSerialization.jsonObject(with: encodedData ?? Data(), options: .allowFragments)
             print(requestParams as Any)
-            NetworkHandler.apiRequest(endPoint: Constants.EndPoint.users,
+            NetworkHandler.apiRequest(endPoint: EndPoint.users,
                                       paramData: encodedData,
                                       method: .patch,
                                       onSuccess: { (responseDict) in
@@ -62,11 +62,11 @@ class EditProfileViewModel {
                     UserManager.shared.user = decodedData
                     //save to userdefaults
                     let userDict = dataDict["user"] as? [String: Any]
-                    UserDefaults.standard.set(userDict?["accessToken"], forKey: Constants.Defaults.authToken)
-                    UserDefaults.standard.set(userDict?["email"], forKey: Constants.Defaults.userEmail)
-                    UserDefaults.standard.set(userDict?["firstName"], forKey: Constants.Defaults.userFirstName)
-                    UserDefaults.standard.set(userDict?["lastName"], forKey: Constants.Defaults.userLastName)
-                    UserDefaults.standard.set(userDict?["refreshToken"], forKey: Constants.Defaults.userRefreshToken)
+                    UserDefaults.standard.set(userDict?["accessToken"], forKey: Defaults.authToken)
+                    UserDefaults.standard.set(userDict?["email"], forKey: Defaults.userEmail)
+                    UserDefaults.standard.set(userDict?["firstName"], forKey: Defaults.userFirstName)
+                    UserDefaults.standard.set(userDict?["lastName"], forKey: Defaults.userLastName)
+                    UserDefaults.standard.set(userDict?["refreshToken"], forKey: Defaults.userRefreshToken)
                 }
                 success("Success")
             }, onFailure: { errorMsg, _ in

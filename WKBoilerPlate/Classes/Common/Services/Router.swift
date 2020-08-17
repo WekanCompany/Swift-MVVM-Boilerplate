@@ -17,7 +17,7 @@ class Router {
      - returns: the requested viewcontroller in it's file type
      */
     static func getVCFromOnboardingStoryboard(withId storyboardId: String) -> Any {
-        let storyboard = UIStoryboard(name: Constants.Storyboards.onboarding, bundle: nil)
+        let storyboard = UIStoryboard(name: Storyboards.onboarding, bundle: nil)
         let viewC = storyboard.instantiateViewController(withIdentifier: storyboardId)
         return viewC
     }
@@ -29,7 +29,7 @@ class Router {
      - returns: the requested viewcontroller in it's file type
      */
     static func getVCFromMainStoryboard(withId storyboardId: String) -> Any {
-        let storyboard = UIStoryboard(name: Constants.Storyboards.main, bundle: nil)
+        let storyboard = UIStoryboard(name: Storyboards.main, bundle: nil)
         let viewC = storyboard.instantiateViewController(withIdentifier: storyboardId)
         return viewC
     }
@@ -51,16 +51,16 @@ class Router {
     /// - If already authenticated, will get inside app
     /// - Else will be taken to authentication screen
     static func setRootViewController() {
-        let authToken = UserDefaults.standard.value(forKey: Constants.Defaults.authToken)
+        let authToken = UserDefaults.standard.value(forKey: Defaults.authToken)
         DispatchQueue.main.async {
             if authToken != nil {
-                let storyboardID = Constants.StoryboardID.mainNav
+                let storyboardID = StoryboardID.mainNav
                 let navC = Router.getVCFromMainStoryboard(withId: storyboardID) as? UINavigationController
-                Constants.appDelegate.window?.rootViewController = navC
+                appDelegate.window?.rootViewController = navC
             } else {
-                let storyboardID = Constants.StoryboardID.onboardingNav
+                let storyboardID = StoryboardID.onboardingNav
                 let navC = Router.getVCFromOnboardingStoryboard(withId: storyboardID) as? UINavigationController
-                Constants.appDelegate.window?.rootViewController = navC
+                appDelegate.window?.rootViewController = navC
             }
         }
     }

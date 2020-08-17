@@ -39,7 +39,7 @@ class RealmMembersViewModel {
      - Parameter failure: callback for API failure
      */
     func getAllUsers(onSuccess success: @escaping OnSuccess, onFailure failure: @escaping OnFailure) {
-        var endPoint = "\(Constants.EndPoint.users)?fields=email,firstName,lastName&sort=status|asc"
+        var endPoint = "\(EndPoint.users)?fields=email,firstName,lastName&sort=status|asc"
         endPoint = endPoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? endPoint
         NetworkHandler.apiRequest(endPoint: endPoint,
                                   paramDict: [:],

@@ -30,10 +30,10 @@ class MyProfileViewController: BaseViewController {
     /// Load available user data on the fields
     func loadUserData() {
         let defaults = UserDefaults.standard
-        let fName = defaults.object(forKey: Constants.Defaults.userFirstName)
-        let lName = defaults.object(forKey: Constants.Defaults.userLastName)
+        let fName = defaults.object(forKey: Defaults.userFirstName)
+        let lName = defaults.object(forKey: Defaults.userLastName)
         nameLbl.text = "\(fName ?? "") \(lName ?? "")"
-        emailLbl.text = "\(defaults.object(forKey: Constants.Defaults.userEmail) ?? "")"
+        emailLbl.text = "\(defaults.object(forKey: Defaults.userEmail) ?? "")"
     }
 
     /// Edit profile button tap action
